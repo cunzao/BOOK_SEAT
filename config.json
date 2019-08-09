@@ -1,14 +1,17 @@
 {
-    "usernum": "",
-    "password": "",
-    "wanna_room": "1",
-    "wanna_seat": "",
-    "startTime": "7",
-    "duration": "3",
-
-    "partnerFlag": "",
-    "partnerID": "",
-    "partnerName": "",
-    "partnerNum": "",
-    "partnerWannaSeat": "88"
+    "userNum" : "",
+    "passWord" : "",
+    "wannaRoom" : "",
+    "wannaSeat" : "",
+    "startTime" : "",
+    "wannaDuration" : "",
+    "partnerFlag" : "",
+    "partnerNum" : "",
+    "partnerName" : "",
+    "partnerWannaSeat" : "",
+    "serverToken" : "",
+    "userName" : "",
+    "cookies" : "",
+    "userID" : "",
+    "partnerID" : ""
 }

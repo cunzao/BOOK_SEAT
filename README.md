@@ -8,80 +8,64 @@
 
 首先环境安装：使用PIP进行环境安装。
 
-```
+```powershell
 pip install requests
 ```
-**~~pip install schedule~~** # 暂时放弃使用schedule，感觉使用schedule过程中存在一定的局限性，自己写的定时器更适合这个程序吧。
-
-
-接着填好脚本内注释了需要填的东西。
-
-```python
-        'usernum': '',#学号
-
-        'password': '',#密码
-
-        'partnerFlag': 'true',  # 需要加入小伙伴则置为true,不用则为false。** 如果加入小伙伴则与小伙伴相关的内容都需要填写，并且正确！ **
-
-        'partnerNum': '',#小伙伴学号
-
-        'partnerName': '',#小伙伴的姓名,一定要和学号匹配！否则程序无法正常运行
-        
-        'wanna_room': '1',  # 1二楼南，2南楼北，3三楼北，4三楼南
-        
-        'wanna_seat': '99',  # 自己想要的位置
-        
-        'startTime': '9',  #想要开始的时间
-        
-        'partnerWannaSeat': '88',  # 小伙伴想要的位置
-        
-        'wanna_duration': '13',  # 想要在自习室待多久
-
-```
-</br>
-
-通知问题：使用[server酱](http://sc.ftqq.com)进行通知，先前往server酱官网进行申请与绑定，得到一个server酱的Token，将此Token替换脚本内这个函数内的
 
 </br>
 
+打开**config.json**文件，填写相应的数据
+
 ```python
-# 向Server酱发送消息以进行消息通知
+        "usernum": "",#学号
 
-def send_msg(msg='快来见抢座位程序最后一面啦~', state='false'):
+        "password": "",#密码
+            
+        "wannaRoom": "1",  # 1二楼南，2南楼北，3三楼北，4三楼南
+        
+        "wannaSeat": "99",  # 自己想要的位置
+        
+        "startTime": "9",  #想要开始的时间
+        
+        "wannaDuration": "13",  # 想要在自习室待多久
 
-​    r = requests.post('https://sc.ftqq.com/{}.send?text=位置预约系统的来信&desp={}'.format(Server酱的Token, msg))
+        "partnerFlag": true,  # 需要加入小伙伴则置为true,不用则为false。** 如果加入小伙伴则与小伙伴相关的内容都需要填写，并且正确！ **
 
-​    r = r.json()
+        "partnerNum": "",#小伙伴学号
 
-​    print(msg, r['errmsg'], state, datetime.datetime.now())
+        "partnerName": "",#小伙伴的姓名,一定要和学号匹配！否则程序无法正常运行
+        
+        "partnerWannaSeat": "88",  # 小伙伴想要的位置
+            
+        "serverToken" : "", #server酱的token
 ```
+</br>
+
+通知问题：使用[server酱](http://sc.ftqq.com)进行通知，先前往server酱官网进行申请与绑定，得到一个server酱的Token，将此Token输入到**config.json**文件中的serverToken
+
+</br>
 
 "**server酱的Token**"。  注意！！！这个token需要字符串形式，也就是两边要加上''或者""，否则将不会有消息通知的。
 
-
+</br>
 
 运行这个脚本则输入命令：
 
-```
+```powershell
 python3 自习室抢位置.py
 ```
 
+</br>
+
 ## 运行的时候怎么调整数据？
 
-如果想要初始化，就请停止这个脚本之后再删除同目录下的install.lock这个文件，之后再运行一遍这个脚本就好了。
+如果想要更新数据，在**自习室抢位置.py**这个文件中调用**renewInfo()**函数即可。如果没有修改账号密码或者小伙伴的信息则不需要更新数据。<u>初始化的时候，因为cookies为空，所以会自动调用**renewInfo()**函数，所以不必重复调用</u>
 
+~~想要调整位置信息可以直接更改**config.json**这个文件，不用停止脚本，反正随便皮。~~
 
-想要调整位置信息可以直接更改test.json这个文件，不用停止脚本，反正随便皮。
+暂时下线这个调整功能，我想下如何优化这个功能。
 
-## 想要立马测试程序怎么办？
-如果想要测试这个程序，就把程序内的
-```python
-while True:
-    schedule.run_pending()
-    time.sleep(1)
-# job()
-```
-注释了，然后job()取消注释，在 book_seat / book_seat_withPartner 这两个函数中的time.sleep(60.3)给相应的注释了。这样就可以立马测试程序。
+</br>
 
 
 ## PS
@@ -90,11 +74,19 @@ while True:
 
 我想了想还是把完整的代码放出来了。
 
-完全面向过程编程，面向对象是不存在的，怎么顺手怎么来！ 
+~~完全面向过程编程，面向对象是不存在的，怎么顺手怎么来！~~ 
+
+期待已久的面向对象编程出现了！可以将各种函数封装，只管调用一个**work()**即可！
+
+</br>
 
 ## PPS
 
-大佬愿意帮忙对象化的，可以联系我。就是提一个issue就可以了哦。不然pull request？
+~~大佬愿意帮忙对象化的，可以联系我。就是提一个issue就可以了哦。不然pull request？~~
+
+感谢**[sadscv](https://github.com/sadscv)**大佬，感谢提供大佬的对象化代码，大佬辛苦了。
+
+</br>
 
 ## PPPS
 
@@ -104,7 +96,7 @@ while True:
 
 **暂时下线本Demo**
 
-
+</br>
 
 ## 更新日志
 
@@ -172,6 +164,8 @@ while True:
 
 ~~3.TODO：重构输出函数~~
 
+</br>
+
 2019年7月30日 21点49分
 
 1.重构了输出函数
@@ -180,4 +174,20 @@ while True:
 
 3.好消息，好消息。我又回来填坑了，是不是很开心？
 
-4.TODO:尝试对整体封装。
+~~4.TODO:尝试对整体封装。~~
+
+</br>
+
+2019年8月9日 22点27分
+
+1.首先感谢**[sadscv](https://github.com/sadscv)**大佬，感谢提供大佬的对象化代码，大佬辛苦了
+
+2.参考大佬的代码，将以前的代码进行面向对象编程
+
+3.删除了cookies管理相关的代码，经过一段时间的使用发现cookies可以不用更新
+
+4.增加大量注释
+
+5.修复了请求位置数因为链接不稳定而不变化，导致不断发送请求的问题
+
+6.更新了REAEDME.MD文件，修改了程序的使用说明
