@@ -302,6 +302,7 @@ def book_seat(beginTime, seat_id=26267, seatBookers_id=60000, duration=3600*3):
     request_state, book_seat_request = send_book_seat_requests(book_seat_content, headers) # 发送请求
     looptimes = 0 # 用于记录位置尝试的次数
     while(book_seat_state == 'fail' and looptimes <= 12): # 如果没有预约成功b并且尝试次数小于13次则继续尝试
+        looptimes += 1
         times = 0 # 用于记录发送请求的次数，因为经常会timeout，所以需要记录这个的次数。
         book_seat_content = {'beginTime': beginTime, 'duration': duration, 'seats[0]': seat_id, 'seatBookers[0]': seatBookers_id}
         request_state, book_seat_request = send_book_seat_requests(book_seat_content, headers)
@@ -314,16 +315,21 @@ def book_seat(beginTime, seat_id=26267, seatBookers_id=60000, duration=3600*3):
             book_seat_request_json = book_seat_request.json()
             book_seat_state = book_seat_request_json['DATA']['result']
             book_seat_msg = book_seat_request_json['DATA']['msg']
-            looptimes += 1
+            if('success' in book_seat_state or '成功' in book_seat_msg):
+                myPrint('book_seat: 消息如下：{}，预约状态：{}'.format(book_seat_msg, book_seat_state))
+                break
             if('已有的预约' in book_seat_msg): # 已有预约表明已经有了位置，则强制中断。
                 flag = 1
                 book_seat_msg, book_seat_state = '安排上了', "true"
                 myPrint('book_seat: 为{} 尝试了{}次'.format(seatBookers_id, looptimes))
+                myPrint('book_seat: 消息如下：{}，预约状态：{}'.format(book_seat_msg, book_seat_state))
                 break
-            if('已被加入黑名单' in book_seat_request_json['DATA']['msg']): # 忘记签到被拉黑了直接结束本次任务！
-                book_seat_msg, book_seat_state = book_seat_request_json['DATA']['msg'], 'fail'
+            if('已被加入黑名单' in book_seat_msg): # 忘记签到被拉黑了直接结束本次任务！
+#                 book_seat_msg, book_seat_state = book_seat_request_json['DATA']['msg'], 'fail'
+                myPrint('book_seat: 消息如下：{}，预约状态：{}'.format(book_seat_msg, book_seat_state))
                 break
             if('选择的位置无法预约' in book_seat_msg): # 位置被占了就尝试下一个位置
+                myPrint('book_seat: 消息如下：{}，预约状态：{}'.format(book_seat_msg, book_seat_state))
                 book_seat_state = 'fail'
                 seat_id -= 1
         except:
