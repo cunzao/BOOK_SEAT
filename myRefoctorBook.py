@@ -101,6 +101,7 @@ class seatBooker(object):
         self.myPrint('初始化！')
         self.bookerName = bookerName
         self.jsonPath = jsonPath
+        self.logPath = '{}.log'.format(self.bookerName)
         self.czJson = myJson(jsonPath)
         if(not self.czJson.cookies):
             self.renewInfo()
@@ -351,18 +352,19 @@ class seatBooker(object):
         requestState, bookSeatRequest = self.__sendBookSeatRequests(bookSeatContent, bookSeatHeaders) # 发送请求
         sumOfTriedSeatsNum = 0 # 用于记录位置尝试的数量
         while(bookSeatState == 'fail' and sumOfTriedSeatsNum <= 12): # 如果没有预约成功b并且尝试次数小于13次则继续尝试
+            sumOfTriedSeatsNum += 1
             requestTimes = 1 
             # requestState, bookSeatRequest = self.__sendBookSeatRequests(bookSeatContent, bookSeatHeaders)
             while requestState == False or bookSeatRequest.status_code != 200: # 如果请求没有发送成功或者对方服务器崩溃就一直请求
                 requestTimes = requestTimes + 1
                 requestState, bookSeatRequest = self.__sendBookSeatRequests(bookSeatContent, bookSeatHeaders)
                 if(requestTimes == 60):
+                    print('尝试了60次，状态码：{}'.format(bookSeatRequest.status_code))
                     break
             try:
                 bookSeatRequestJson = bookSeatRequest.json()
                 bookSeatState = bookSeatRequestJson['DATA']['result']
                 bookSeatMsg = bookSeatRequestJson['DATA']['msg']
-                sumOfTriedSeatsNum += 1
                 if('已有的预约' in bookSeatMsg): # 已有预约表明已经有了位置，则强制中断。
                     isBookedFlag = True
                     bookSeatMsg, bookSeatState = '安排上了', "true"
