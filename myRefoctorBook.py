@@ -78,6 +78,7 @@ class myJson():
         """
         self.__readedJson[variableName] = variableValue
         self.__saveJsonToFile()
+        self.__variablesAssignment()
 
 class seatBooker(object):
     '''
@@ -104,6 +105,7 @@ class seatBooker(object):
         self.logPath = '{}.log'.format(self.bookerName)
         self.czJson = myJson(jsonPath)
         if(not self.czJson.cookies):
+            self.myPrint('未登录，现在开始登录！')
             self.renewInfo()
         self.myPrint('初始化成功！{}'.format(self.czJson.cookies))
 
