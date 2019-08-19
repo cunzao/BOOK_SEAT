@@ -109,6 +109,8 @@ class myJson():
     def userNum(self, value):
         self.myPrint('修改{}的值，从 {} 变成 {}'.format(sys._getframe().f_code.co_name, self.__userNum, value))
         self.__userNum = value
+        self.__readedJson[sys._getframe().f_code.co_name] = value
+        self.__saveJsonToFile()
 
     @property
     def passWord(self):
@@ -118,6 +120,8 @@ class myJson():
     def passWord(self, value):
         self.myPrint('修改{}的值，从 {} 变成 {}'.format(sys._getframe().f_code.co_name, self.__passWord, value))
         self.__passWord = value
+        self.__readedJson[sys._getframe().f_code.co_name] = value
+        self.__saveJsonToFile()
     
     @property
     def wannaRoom(self):
@@ -127,6 +131,8 @@ class myJson():
     def wannaRoom(self, value):
         self.myPrint('修改{}的值，从 {} 变成 {}'.format(sys._getframe().f_code.co_name, self.__wannaRoom, value))
         self.__wannaRoom = value
+        self.__readedJson[sys._getframe().f_code.co_name] = value
+        self.__saveJsonToFile()
 
     @property
     def wannaSeat(self):
@@ -136,6 +142,8 @@ class myJson():
     def wannaSeat(self, value):
         self.myPrint('修改{}的值，从 {} 变成 {}'.format(sys._getframe().f_code.co_name, self.__wannaSeat, value))
         self.__wannaSeat = value
+        self.__readedJson[sys._getframe().f_code.co_name] = value
+        self.__saveJsonToFile()
 
     @property
     def startTime(self):
@@ -145,6 +153,8 @@ class myJson():
     def startTime(self, value):
         self.myPrint('修改{}的值，从 {} 变成 {}'.format(sys._getframe().f_code.co_name, self.__startTime, value))
         self.__startTime = value
+        self.__readedJson[sys._getframe().f_code.co_name] = value
+        self.__saveJsonToFile()
 
     @property
     def wannaDuration(self):
@@ -154,6 +164,8 @@ class myJson():
     def wannaDuration(self, value):
         self.myPrint('修改{}的值，从 {} 变成 {}'.format(sys._getframe().f_code.co_name, self.__wannaDuration, value))
         self.__wannaDuration = value
+        self.__readedJson[sys._getframe().f_code.co_name] = value
+        self.__saveJsonToFile()
 
     @property
     def partnerFlag(self):
@@ -163,6 +175,8 @@ class myJson():
     def partnerFlag(self, value):
         self.myPrint('修改{}的值，从 {} 变成 {}'.format(sys._getframe().f_code.co_name, self.__partnerFlag, value))
         self.__partnerFlag = value
+        self.__readedJson[sys._getframe().f_code.co_name] = value
+        self.__saveJsonToFile()
 
     @property
     def partnerNum(self):
@@ -172,6 +186,8 @@ class myJson():
     def partnerNum(self, value):
         self.myPrint('修改{}的值，从 {} 变成 {}'.format(sys._getframe().f_code.co_name, self.__partnerNum, value))
         self.__partnerNum = value
+        self.__readedJson[sys._getframe().f_code.co_name] = value
+        self.__saveJsonToFile()
 
     @property
     def partnerName(self):
@@ -181,6 +197,8 @@ class myJson():
     def partnerName(self, value):
         self.myPrint('修改{}的值，从 {} 变成 {}'.format(sys._getframe().f_code.co_name, self.__partnerName, value))
         self.__partnerName = value
+        self.__readedJson[sys._getframe().f_code.co_name] = value
+        self.__saveJsonToFile()
 
     @property
     def partnerWannaSeat(self):
@@ -190,6 +208,8 @@ class myJson():
     def partnerWannaSeat(self, value):
         self.myPrint('修改{}的值，从 {} 变成 {}'.format(sys._getframe().f_code.co_name, self.__partnerWannaSeat, value))
         self.__partnerWannaSeat = value
+        self.__readedJson[sys._getframe().f_code.co_name] = value
+        self.__saveJsonToFile()
 
     @property
     def serverToken(self):
@@ -199,6 +219,8 @@ class myJson():
     def serverToken(self, value):
         self.myPrint('修改{}的值，从 {} 变成 {}'.format(sys._getframe().f_code.co_name, self.__serverToken, value))
         self.__serverToken = value
+        self.__readedJson[sys._getframe().f_code.co_name] = value
+        self.__saveJsonToFile()
 
     @property
     def userName(self):
@@ -208,6 +230,8 @@ class myJson():
     def userName(self, value):
         self.myPrint('修改{}的值，从 {} 变成 {}'.format(sys._getframe().f_code.co_name, self.__userName, value))
         self.__userName = value
+        self.__readedJson[sys._getframe().f_code.co_name] = value
+        self.__saveJsonToFile()
 
     @property
     def cookies(self):
@@ -217,6 +241,8 @@ class myJson():
     def cookies(self, value):
         self.myPrint('修改{}的值，从 {} 变成 {}'.format(sys._getframe().f_code.co_name, self.__cookies, value))
         self.__cookies = value
+        self.__readedJson[sys._getframe().f_code.co_name] = value
+        self.__saveJsonToFile()
 
     @property
     def userID(self):
@@ -226,6 +252,8 @@ class myJson():
     def userID(self, value):
         self.myPrint('修改{}的值，从 {} 变成 {}'.format(sys._getframe().f_code.co_name, self.__userID, value))
         self.__userID = value
+        self.__readedJson[sys._getframe().f_code.co_name] = value
+        self.__saveJsonToFile()
 
     @property
     def partnerID(self):
@@ -235,6 +263,8 @@ class myJson():
     def partnerID(self, value):
         self.myPrint('修改{}的值，从 {} 变成 {}'.format(sys._getframe().f_code.co_name, self.__partnerID, value))
         self.__partnerID = value
+        self.__readedJson[sys._getframe().f_code.co_name] = value
+        self.__saveJsonToFile()
 
     def __str__(self):
         '''
