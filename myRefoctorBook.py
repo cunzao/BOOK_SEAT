@@ -7,30 +7,59 @@ import os
 import sys
 import traceback
 
+class myPrinter(object):
+    '''
+    用于自定义输出
+    '''
+    __logPath = ''
+
+    def __init__(self, logPath):
+        self.__logPath = logPath
+        self.myPrint('myPrinter 初始化成功！')
+
+    def myPrint(self, *myPrintStr):
+        """
+        自定义输出
+        输出到屏幕的同时输出到文件中
+        输入值： 需要输出的内容
+        返回值： 无
+        """
+        temp = ''
+        for oneStr in myPrintStr:
+            temp += str(oneStr)
+            print('{}, 时间：{}，{}'.format(self.__logPath[:self.__logPath.index('.log')], datetime.datetime.now(), temp))
+            logFile = open(self.__logPath,'a',encoding='utf-8')
+            '''
+            不需要则注释下面这句
+            '''
+            print('{}, 时间：{}，{}'.format(self.__logPath[:self.__logPath.index('.log')], datetime.datetime.now(), temp), file = logFile)
+
 class myJson():
     '''
     class: myJson
     用途： 用于管理脚本使用过程中所用到的数据
     '''
-    userNum = ''
-    passWord = ''
-    wannaRoom = ''
-    wannaSeat = ''
-    startTime = ''
-    wannaDuration = ''
-    partnerFlag = ''
-    partnerNum = ''
-    partnerName = ''
-    partnerWannaSeat = ''
-    serverToken = ''
-    userName = ''
-    cookies = ''
-    userID = ''
-    partnerID = ''
+    __userNum = ''
+    __passWord = ''
+    __wannaRoom = ''
+    __wannaSeat = ''
+    __startTime = ''
+    __wannaDuration = ''
+    __partnerFlag = ''
+    __partnerNum = ''
+    __partnerName = ''
+    __partnerWannaSeat = ''
+    __serverToken = ''
+    __userName = ''
+    __cookies = ''
+    __userID = ''
+    __partnerID = ''
     __jsonPath = ''
     __readedJson = {}
+    myPrint = None
     
-    def __init__(self, jsonPath:str):
+    def __init__(self, jsonPath:str, myPrinterFunc):
+        self.myPrint = myPrinterFunc
         self.__jsonPath = jsonPath
         self.readJsonFile()
         self.__variablesAssignment()
@@ -47,22 +76,22 @@ class myJson():
         """
         将读取到的值赋给相应的变量
         """
-        self.userNum = int(self.__readedJson['userNum'])
-        self.passWord = self.__readedJson['passWord']
-        self.wannaRoom = int(self.__readedJson['wannaRoom'])
-        self.wannaSeat = int(self.__readedJson['wannaSeat'])
-        self.startTime = int(self.__readedJson['startTime'])
-        self.wannaDuration = int(self.__readedJson['wannaDuration'])
-        self.partnerFlag = bool(self.__readedJson['partnerFlag'])
+        self.__userNum = int(self.__readedJson['userNum'])
+        self.__passWord = self.__readedJson['passWord']
+        self.__wannaRoom = int(self.__readedJson['wannaRoom'])
+        self.__wannaSeat = int(self.__readedJson['wannaSeat'])
+        self.__startTime = int(self.__readedJson['startTime'])
+        self.__wannaDuration = int(self.__readedJson['wannaDuration'])
+        self.__partnerFlag = bool(self.__readedJson['partnerFlag'])
         if(self.partnerFlag):
-            self.partnerNum = int(self.__readedJson['partnerNum'])
-            self.partnerName = self.__readedJson['partnerName']
-            self.partnerWannaSeat = int(self.__readedJson['partnerWannaSeat'])
-        self.serverToken = self.__readedJson['serverToken']
-        self.userName = self.__readedJson['userName']
-        self.cookies = self.__readedJson['cookies']
-        self.userID = self.__readedJson['userID']
-        self.partnerID = self.__readedJson['partnerID']
+            self.__partnerNum = int(self.__readedJson['partnerNum'])
+            self.__partnerName = self.__readedJson['partnerName']
+            self.__partnerWannaSeat = int(self.__readedJson['partnerWannaSeat'])
+        self.__serverToken = self.__readedJson['serverToken']
+        self.__userName = self.__readedJson['userName']
+        self.__cookies = self.__readedJson['cookies']
+        self.__userID = self.__readedJson['userID']
+        self.__partnerID = self.__readedJson['partnerID']
 
     def __saveJsonToFile(self):
         """
@@ -72,13 +101,153 @@ class myJson():
         json.dump(self.__readedJson, file, ensure_ascii=False)
         file.close()
 
-    def changeJsonVariable(self, variableName:str, variableValue):
-        """
-        更改相应的值，并保存
-        """
-        self.__readedJson[variableName] = variableValue
-        self.__saveJsonToFile()
-        self.__variablesAssignment()
+    @property
+    def userNum(self):
+        return self.__userNum
+
+    @userNum.setter
+    def userNum(self, value):
+        self.myPrint('修改{}的值，从 {} 变成 {}'.format(sys._getframe().f_code.co_name, self.__userNum, value))
+        self.__userNum = value
+
+    @property
+    def passWord(self):
+        return self.__passWord
+
+    @passWord.setter
+    def passWord(self, value):
+        self.myPrint('修改{}的值，从 {} 变成 {}'.format(sys._getframe().f_code.co_name, self.__passWord, value))
+        self.__passWord = value
+    
+    @property
+    def wannaRoom(self):
+        return self.__wannaRoom
+
+    @wannaRoom.setter
+    def wannaRoom(self, value):
+        self.myPrint('修改{}的值，从 {} 变成 {}'.format(sys._getframe().f_code.co_name, self.__wannaRoom, value))
+        self.__wannaRoom = value
+
+    @property
+    def wannaSeat(self):
+        return self.__wannaSeat
+
+    @wannaSeat.setter
+    def wannaSeat(self, value):
+        self.myPrint('修改{}的值，从 {} 变成 {}'.format(sys._getframe().f_code.co_name, self.__wannaSeat, value))
+        self.__wannaSeat = value
+
+    @property
+    def startTime(self):
+        return self.__startTime
+
+    @startTime.setter
+    def startTime(self, value):
+        self.myPrint('修改{}的值，从 {} 变成 {}'.format(sys._getframe().f_code.co_name, self.__startTime, value))
+        self.__startTime = value
+
+    @property
+    def wannaDuration(self):
+        return self.__wannaDuration
+
+    @wannaDuration.setter
+    def wannaDuration(self, value):
+        self.myPrint('修改{}的值，从 {} 变成 {}'.format(sys._getframe().f_code.co_name, self.__wannaDuration, value))
+        self.__wannaDuration = value
+
+    @property
+    def partnerFlag(self):
+        return self.__partnerFlag
+
+    @partnerFlag.setter
+    def partnerFlag(self, value):
+        self.myPrint('修改{}的值，从 {} 变成 {}'.format(sys._getframe().f_code.co_name, self.__partnerFlag, value))
+        self.__partnerFlag = value
+
+    @property
+    def partnerNum(self):
+        return self.__partnerNum
+
+    @partnerNum.setter
+    def partnerNum(self, value):
+        self.myPrint('修改{}的值，从 {} 变成 {}'.format(sys._getframe().f_code.co_name, self.__partnerNum, value))
+        self.__partnerNum = value
+
+    @property
+    def partnerName(self):
+        return self.__partnerName
+
+    @partnerName.setter
+    def partnerName(self, value):
+        self.myPrint('修改{}的值，从 {} 变成 {}'.format(sys._getframe().f_code.co_name, self.__partnerName, value))
+        self.__partnerName = value
+
+    @property
+    def partnerWannaSeat(self):
+        return self.__partnerWannaSeat
+
+    @partnerWannaSeat.setter
+    def partnerWannaSeat(self, value):
+        self.myPrint('修改{}的值，从 {} 变成 {}'.format(sys._getframe().f_code.co_name, self.__partnerWannaSeat, value))
+        self.__partnerWannaSeat = value
+
+    @property
+    def serverToken(self):
+        return self.__serverToken
+
+    @serverToken.setter
+    def serverToken(self, value):
+        self.myPrint('修改{}的值，从 {} 变成 {}'.format(sys._getframe().f_code.co_name, self.__serverToken, value))
+        self.__serverToken = value
+
+    @property
+    def userName(self):
+        return self.__userName
+
+    @userName.setter
+    def userName(self, value):
+        self.myPrint('修改{}的值，从 {} 变成 {}'.format(sys._getframe().f_code.co_name, self.__userName, value))
+        self.__userName = value
+
+    @property
+    def cookies(self):
+        return self.__cookies
+
+    @cookies.setter
+    def cookies(self, value):
+        self.myPrint('修改{}的值，从 {} 变成 {}'.format(sys._getframe().f_code.co_name, self.__cookies, value))
+        self.__cookies = value
+
+    @property
+    def userID(self):
+        return self.__userID
+
+    @userID.setter
+    def userID(self, value):
+        self.myPrint('修改{}的值，从 {} 变成 {}'.format(sys._getframe().f_code.co_name, self.__userID, value))
+        self.__userID = value
+
+    @property
+    def partnerID(self):
+        return self.__partnerID
+
+    @partnerID.setter
+    def partnerID(self, value):
+        self.myPrint('修改{}的值，从 {} 变成 {}'.format(sys._getframe().f_code.co_name, self.__partnerID, value))
+        self.__partnerID = value
+
+    def __str__(self):
+        '''
+        输出相关的信息~~~
+        '''
+        if(self.partnerFlag):
+            '''
+            如果有同伴则输出用户名，cookies，以及同伴的学号姓名
+            一般用于Debug
+            '''
+            return '类名：{}, userNum:{}, cookies:{}, partnerFlag:{}, partnerUserNum:{}, partnerName:{}'.format(self.__class__.__name__, self.userNum, self.cookies, self.partnerFlag, self.partnerNum, self.partnerName)
+        else:
+            return '类名：{}, userNum:{}, cookies:{}'.format(self.__class__.__name__, self.userNum, self.cookies)
 
 class seatBooker(object):
     '''
@@ -92,6 +261,7 @@ class seatBooker(object):
     logPath = 'logging.log'
     bookerName = '预约者'
     czJson = None
+    myPrint = None
     
     def __init__(self, bookerName, jsonPath):
         '''
@@ -99,32 +269,15 @@ class seatBooker(object):
         输入值： booker的姓名，json文件的地址
         返回值： 无
         '''
-        self.myPrint('初始化！')
         self.bookerName = bookerName
-        self.jsonPath = jsonPath
         self.logPath = '{}.log'.format(self.bookerName)
-        self.czJson = myJson(jsonPath)
+        self.myPrint = myPrinter(self.logPath).myPrint
+        self.jsonPath = jsonPath
+        self.czJson = myJson(jsonPath, self.myPrint)
         if(not self.czJson.cookies):
             self.myPrint('未登录，现在开始登录！')
             self.renewInfo()
-        self.myPrint('初始化成功！{}'.format(self.czJson.cookies))
-
-    def myPrint(self, *myPrintStr):
-        """
-        自定义输出
-        输出到屏幕的同时输出到文件中
-        输入值： 需要输出的内容
-        返回值： 无
-        """
-        temp = ''
-        for oneStr in myPrintStr:
-            temp += str(oneStr)
-        print('{}, 时间：{}，{}'.format(self.bookerName, datetime.datetime.now(), temp))
-        logFile = open(self.logPath,'a',encoding='utf-8')
-        '''
-        不需要则注释下面这句
-        '''
-        print('{}, 时间：{}，{}'.format(self.bookerName, datetime.datetime.now(), temp), file = logFile)
+        self.myPrint('初始化成功！{}'.format(self.czJson))
 
     def __getTrueRoomNum(self,room):
         """
@@ -227,7 +380,7 @@ class seatBooker(object):
             tempLen = len(' for jxnu.huitu.zhishulib.com/>')
             trueCookie += str(cookie)[7:-tempLen] + ';'
         trueCookie = trueCookie[1:-1]
-        self.czJson.changeJsonVariable('cookies', trueCookie)
+        self.czJson.cookies = trueCookie
         # return True
         
     def __login(self):
@@ -279,7 +432,7 @@ class seatBooker(object):
         searchUserIDJson = searchUserIDRequest.json()
         self.myPrint("getPartnerID:  searchUserIDJson{}".format(searchUserIDJson))
         partnerID = searchUserIDJson['DATA']['user_id']
-        self.czJson.changeJsonVariable('partnerID', partnerID)
+        self.czJson.partnerID = partnerID
 
     def __saveUserInfo(self, loginReq):
         """
@@ -289,8 +442,8 @@ class seatBooker(object):
         """
         loginRequest = loginReq
         userInfoJson = loginRequest.json()
-        self.czJson.changeJsonVariable('userID', userInfoJson['id'])
-        self.czJson.changeJsonVariable('userName', userInfoJson['name'])
+        self.czJson.userID = userInfoJson['id']
+        self.czJson.userName = userInfoJson['name']
 
     def renewInfo(self):
         """
@@ -356,7 +509,6 @@ class seatBooker(object):
         while(bookSeatState == 'fail' and sumOfTriedSeatsNum <= 12): # 如果没有预约成功b并且尝试次数小于13次则继续尝试
             sumOfTriedSeatsNum += 1
             requestTimes = 1 
-            # requestState, bookSeatRequest = self.__sendBookSeatRequests(bookSeatContent, bookSeatHeaders)
             while requestState == False or bookSeatRequest.status_code != 200: # 如果请求没有发送成功或者对方服务器崩溃就一直请求
                 requestTimes = requestTimes + 1
                 requestState, bookSeatRequest = self.__sendBookSeatRequests(bookSeatContent, bookSeatHeaders)
@@ -475,10 +627,11 @@ class seatBooker(object):
             Hour,Mins,Secs = self.__getNowHourMinSec()
             if Hour == 21 and Mins == 59:
                 self.myPrint('开始预约')
+                self.czJson.readJsonFile()
                 try: 
                     self.bookTomorrow()
                 except Exception:
-                    self.myPrint('预约失败\n错误信息：{}'.format(traceback.format_exc()))
+                    self.myPrint('预约失败\n使用的信息：{}\n错误信息：{}'.format(self.czJson, traceback.format_exc()))
                     pass
             Mins += Secs #假装Secs有用
             time.sleep(5)
@@ -487,3 +640,4 @@ class seatBooker(object):
         req = requests.post('https://sc.ftqq.com/{}.send?text=位置预约系统的来信&desp={}'.format(self.czJson.serverToken, msg))
         reqJson = req.json()
         self.myPrint('__sendMessage: {}{}{}'.format(msg, reqJson['errmsg'], state))                
+        
