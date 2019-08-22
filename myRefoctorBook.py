@@ -357,7 +357,7 @@ class seatBooker(object):
             sumOfTriedSeatsNum += 1
             requestTimes = 1 
             # requestState, bookSeatRequest = self.__sendBookSeatRequests(bookSeatContent, bookSeatHeaders)
-            while requestState == False or bookSeatRequest.status_code != 200: # 如果请求没有发送成功或者对方服务器崩溃就一直请求
+            while(requestState == False or bookSeatRequest.status_code != 200): # 如果请求没有发送成功或者对方服务器崩溃就一直请求
                 requestTimes = requestTimes + 1
                 requestState, bookSeatRequest = self.__sendBookSeatRequests(bookSeatContent, bookSeatHeaders)
                 if(requestTimes == 60):
@@ -372,18 +372,22 @@ class seatBooker(object):
                     bookSeatMsg, bookSeatState = '安排上了', "true"
                     self.myPrint('__bookSeat: 为你尝试了{}次'.format(requestTimes))
                     break
-                if('已被加入黑名单' in bookSeatMsg): # 忘记签到被拉黑了直接结束本次任务！
+                elif('已被加入黑名单' in bookSeatMsg): # 忘记签到被拉黑了直接结束本次任务！
                     bookSeatState = 'fail'
                     break
-                if('选择的位置无法预约' in bookSeatMsg): # 位置被占了就尝试下一个位置
+                elif('选择的座位无法预约' in bookSeatMsg): # 位置被占了就尝试下一个位置
                     bookSeatState = 'fail'
                     bookSeatContent['seats[0]'] -= 1
                     self.myPrint('__bookSeat: 反馈信息如下：{} 现在开始尝试这个位置：{}'.format(bookSeatMsg, bookSeatContent['seats[0]']))
                     if(self.czJson.partnerFlag):
                         bookSeatContent['seats[1]'] += 1
                         self.myPrint('__bookSeat: 反馈信息如下：{} 现在开始尝试这两个位置：{}，{}'.format(bookSeatMsg, bookSeatContent['seats[0]'], bookSeatContent['seats[1]']))
+                else:
+                    bookSeatContent['seats[0]'] -= 1
+                    self.myPrint('__bookSeat: 反馈信息如下：{} 什么情况都不符合就尝试这个位置：{}'.format(bookSeatMsg, bookSeatContent['seats[0]']))
             except:
                 bookSeatState = 'fail'
+                self.myPrint('__bookSeat: 1错误信息：{}'.format(traceback.format_exc()))
                 pass
             self.myPrint('__bookSeat: 为你尝试了{}次'.format(requestTimes))
         if(bookSeatState == 'fail' and isBookedFlag != True): # 尝试了60次，依旧没能成功预约上
@@ -392,6 +396,7 @@ class seatBooker(object):
                 bookSeatMsg = bookSeatRequestJson['DATA']['msg'] + ', 都尝试过了'
             except:
                 bookSeatMsg = '很抱歉的通知你，我真的努力了，奈何大家的学习热情真的太高了，我。。。没能帮你抢到位置，所以自己再去捡漏吧。'
+                self.myPrint('__bookSeat: 2错误信息：{}'.format(traceback.format_exc()))
         self.myPrint('__bookSeat :为你尝试了{}个位置'.format(sumOfTriedSeatsNum))
         return bookSeatMsg, bookSeatState
 
@@ -422,7 +427,7 @@ class seatBooker(object):
         self.myPrint('bookSeatContent:{}'.format(bookSeatContent))
         bookSeatMsg, bookSeatStatus = self.__bookSeat(bookSeatContent,bookSeatHeaders)
         self.myPrint('预约状态：{}，预约消息：{}'.format(bookSeatStatus,bookSeatMsg))
-        if(bookSeatStatus):
+        if(bookSeatStatus != 'fail'):
             '''
             如果预约成功了则获取详细的信息
             headers暂时使用位置预约的headers
@@ -486,4 +491,4 @@ class seatBooker(object):
     def __sendMessage(self, msg='快来见抢座位程序最后一面啦~', state='false'):
         req = requests.post('https://sc.ftqq.com/{}.send?text=位置预约系统的来信&desp={}'.format(self.czJson.serverToken, msg))
         reqJson = req.json()
-        self.myPrint('__sendMessage: {}{}{}'.format(msg, reqJson['errmsg'], state))                
+        self.myPrint('__sendMessage: {} {} {}'.format(msg, reqJson['errmsg'], state))                
