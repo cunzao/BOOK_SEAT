@@ -548,7 +548,14 @@ class seatBooker(object):
                     break
             try:
                 bookSeatRequestJson = bookSeatRequest.json()
+                bookSeatCode = bookSeatRequestJson['CODE']
                 bookSeatState = bookSeatRequestJson['DATA']['result']
+                # 如果返回了预约成功。
+                if('success' in bookSeatState or '成功' in bookSeatMsg):
+                    bookSeatMsg = '预约成功!'
+                    bookSeatState = "true"
+                    self.myPrint('消息如下：{}，预约状态：{}'.format(bookSeatMsg, bookSeatState))
+                    break
                 bookSeatMsg = bookSeatRequestJson['DATA']['msg']
                 if('已有的预约' in bookSeatMsg): # 已有预约表明已经有了位置，则强制中断。
                     isBookedFlag = True
@@ -570,6 +577,11 @@ class seatBooker(object):
                     self.myPrint('__bookSeat: 反馈信息如下：{} 什么情况都不符合就尝试这个位置：{}'.format(bookSeatMsg, bookSeatContent['seats[0]']))
             except:
                 bookSeatState = 'fail'
+                if(bookSeatRequestJson):
+                    self.myPrint('json:  {}'.format(bookSeatRequestJson))
+                if('封禁' in bookSeatCode):
+                    bookSeatMsg = bookSeatCode
+                    break
                 self.myPrint('__bookSeat: 1错误信息：{}'.format(traceback.format_exc()))
                 pass
             self.myPrint('__bookSeat: 为你尝试了{}次'.format(requestTimes))
