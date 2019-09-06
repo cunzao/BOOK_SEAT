@@ -312,7 +312,7 @@ class seatBooker(object):
     def __getTrueRoomNum(self,room):
         """
         获取真正的自习室ID
-        1：二楼南，2：南楼北，3：三楼北，4：三楼南
+        1：二楼南，2：二楼北，3：三楼南，4：三楼北
         输入值： 想要自习室的标号
         返回值： 想要自习室的真正ID
         """

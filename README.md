@@ -21,7 +21,7 @@ pip install requests
 
         "password": "",#密码
             
-        "wannaRoom": "1",  # 1二楼南，2南楼北，3三楼北，4三楼南
+        "wannaRoom": "1",  # 1：二楼南，2：二楼北，3：三楼南，4：三楼北
         
         "wannaSeat": "99",  # 自己想要的位置
         
@@ -29,7 +29,7 @@ pip install requests
         
         "wannaDuration": "13",  # 想要在自习室待多久
 
-        "partnerFlag": false,  # 需要加入小伙伴则置为true,不用则为false。** 如果加入小伙伴则与小伙伴相关的内容都需要填写，并且正确！ **
+        "partnerFlag": false,  # 需要加入小伙伴则置为true,不用则为false。//如果加入小伙伴则与小伙伴相关的内容都需要填写，并且正确！
 
         "partnerNum": "",#小伙伴学号
 
