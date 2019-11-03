@@ -515,6 +515,10 @@ class seatBooker(object):
             if(partnerFlag):
                 partnerWannaSeatID += 1
         else:
+            if('data' not in getWannaSeatIDJson):
+                # 如果返回没有合适位置，直接选取静态存储的信息。
+                # TODO 改换动态获取ID
+                getWannaSeatIDJson = get_cache_seats(int(self.__getTrueRoomNum(int(self.czJson.wannaRoom))))
             wannaSeatID = getWannaSeatIDJson['data']['POIs'][-wannaSeat]['id']
             if(partnerFlag):
                 partnerWannaSeatID = getWannaSeatIDJson['data']['POIs'][-partnerWannaSeat]['id']
