@@ -6,6 +6,7 @@ import json
 import os
 import sys
 import traceback
+from shitMountain import get_cache_seats
 
 class myPrinter(object):
     '''
@@ -493,6 +494,7 @@ class seatBooker(object):
         返回值：用户想要位置的ID和同伴想要位置的ID，当没有小伙伴的时候，小伙伴位置的ID为0
         """
         getWannaSeatIDURL = 'https://jxnu.huitu.zhishulib.com/Seat/Index/searchSeats?LAB_JSON=1'
+        getURL = "https://jxnu.huitu.zhishulib.com/Seat/Index/searchSeats?space_category%5Bcategory_id%5D=591&space_category%5Bcontent_id%5D={}&LAB_JSON=1".format(str(self.__getTrueRoomNum(int(self.czJson.wannaRoom))))
         wannaSeatID = 0
         partnerWannaSeatID = 0
         partnerWannaSeat = self.czJson.partnerWannaSeat
@@ -506,6 +508,8 @@ class seatBooker(object):
             'space_category[category_id]': '591', 
             'space_category[content_id]': str(self.__getTrueRoomNum(int(self.czJson.wannaRoom)))
         }
+        searchSeatsGetRequest = requests.get(getURL, headers = getWannaSeatIDHeaders)
+        self.myPrint(searchSeatsGetRequest.json())
         getWannaSeatIDRequest = requests.post(getWannaSeatIDURL, data=getWannaSeatIDContent, headers=getWannaSeatIDHeaders)
         getWannaSeatIDJson = getWannaSeatIDRequest.json()
         if 'data' not in getWannaSeatIDJson:
