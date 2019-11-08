@@ -508,10 +508,13 @@ class seatBooker(object):
             'space_category[category_id]': '591', 
             'space_category[content_id]': str(self.__getTrueRoomNum(int(self.czJson.wannaRoom)))
         }
-        searchSeatsGetRequest = requests.get(getURL, headers = getWannaSeatIDHeaders)
-        self.myPrint(searchSeatsGetRequest.json())
-        getWannaSeatIDRequest = requests.post(getWannaSeatIDURL, data=getWannaSeatIDContent, headers=getWannaSeatIDHeaders)
-        getWannaSeatIDJson = getWannaSeatIDRequest.json()
+        try:
+            searchSeatsGetRequest = requests.get(getURL, headers = getWannaSeatIDHeaders, timeout=12.1)
+            self.myPrint(searchSeatsGetRequest.json())
+            getWannaSeatIDRequest = requests.post(getWannaSeatIDURL, data=getWannaSeatIDContent, headers=getWannaSeatIDHeaders, timeout=12.1)
+            getWannaSeatIDJson = getWannaSeatIDRequest.json()
+        except:
+            getWannaSeatIDJson = {}
         if 'data' not in getWannaSeatIDJson:
             self.myPrint(getWannaSeatIDJson)
         if(wannaSeat == 0):
@@ -539,7 +542,8 @@ class seatBooker(object):
         bookSeatState = 'fail'
         bookSeatMsg = '搞事情'
         Hour,Mins,Secs = self.__getNowHourMinSec()
-        while Hour != 21 or Mins != 59 or Secs != 59: # 只要还没有到21：59：59那就一直休息
+        while Hour != 22 or Mins != 3 or Secs != 11: # 只要还没有到21：59：59那就一直休息
+            #这个参数随便给的，自己看着办吧
             Hour,Mins,Secs = self.__getNowHourMinSec()
             time.sleep(0.5)
         requestState, bookSeatRequest = self.__sendBookSeatRequests(bookSeatContent, bookSeatHeaders) # 发送请求
@@ -681,7 +685,7 @@ class seatBooker(object):
         self.myPrint('开始工作咯！')
         while(True):
             Hour,Mins,Secs = self.__getNowHourMinSec()
-            if Hour == 21 and Mins == 59:
+            if Hour == 22 and Mins == 2 and Secs == 30:
                 self.myPrint('开始预约')
                 self.czJson.readJsonFile()
                 try: 
