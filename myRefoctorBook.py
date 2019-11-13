@@ -694,7 +694,7 @@ class seatBooker(object):
                     self.myPrint('预约失败\n使用的信息：{}\n错误信息：{}'.format(self.czJson, traceback.format_exc()))
                     pass
             Mins += Secs #假装Secs有用
-            time.sleep(5)
+            time.sleep(1)
 
     def __sendMessage(self, msg='快来见抢座位程序最后一面啦~', state='false'):
         req = requests.post('https://sc.ftqq.com/{}.send?text=位置预约系统的来信&desp={}'.format(self.czJson.serverToken, msg))
